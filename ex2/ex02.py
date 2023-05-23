@@ -13,7 +13,10 @@ class Category:
         if self.parent is None:
             print(self.parent)
         else:
-            print(self.parent.display_name, '>', self.display_name)
+            if self.parent.parent is None:
+                print(self.parent.display_name, '>', self.display_name)
+            else:
+                print(self.parent.parent.display_name, '>', self.parent.display_name, '>', self.display_name)
 
     def __str__(self):
         return f'{self.parent}'
