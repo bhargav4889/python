@@ -5,34 +5,30 @@ from ex1.ex01 import Product as PR
 
 class Category:
     def __init__(self, display_name, parent=None):
-        self.parent = parent
         self.display_name = display_name
+        self.parent = parent
         self.products = []
 
     def display(self):
         if self.parent is None:
-            print(self.parent)
+            return self.display_name
         else:
-            if self.parent.parent is None:
-                print(self.parent.display_name, '>', self.display_name)
-            else:
-                print(self.parent.parent.display_name, '>', self.parent.display_name, '>', self.display_name)
-
-    def __str__(self):
-        return f'{self.parent}'
+            return f"{self.parent.display()} > {self.display_name}"
 
 
 Vehicle = Category(display_name="Vehicle")
-Car = Category(parent=Vehicle, display_name="Car")
-Bike = Category(parent=Vehicle, display_name="Bike")
+Car = Category(display_name="Car",parent=Vehicle)
+Bike = Category(display_name="Bike",parent=Vehicle)
 Petrol = Category(parent=Bike, display_name="Petrol")
 Diesel = Category(parent=Car, display_name='Diesel')
+NewObj = Category(parent=Diesel,display_name="newobj2")
+NewObj2 = Category(parent=NewObj,display_name='Neww')
 
-Vehicle.display()
-Bike.display()
-Car.display()
-Petrol.display()
-Diesel.display()
+print(Vehicle.display())
+print(Bike.display())
+print(Car.display())
+print(Petrol.display())
+print(Diesel.display())
 
 # Vehicle is Parent Class It Has Two Child Class --> 1)Bike 2)Car
 # Bike Class Has One Child Class --> Petrol
