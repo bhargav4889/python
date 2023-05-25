@@ -3,32 +3,35 @@ from ex1.ex01 import Product as PR
 
 # Add new data members “parent”, “display_name”, and “products” (list of product objects) inside the category class
 
+
 class Category:
     def __init__(self, display_name, parent=None):
         self.display_name = display_name
         self.parent = parent
         self.products = []
 
-    def display(self):
-        if self.parent is None:
+    def display_info(self):
+        while self.parent is None:
             return self.display_name
         else:
-            return f"{self.parent.display()} > {self.display_name}"
+            return f'{self.parent.display_info()} > {self.display_name}'
 
 
 Vehicle = Category(display_name="Vehicle")
-Car = Category(display_name="Car",parent=Vehicle)
-Bike = Category(display_name="Bike",parent=Vehicle)
+Car = Category(display_name="Car", parent=Vehicle)
+Bike = Category(display_name="Bike", parent=Vehicle)
 Petrol = Category(parent=Bike, display_name="Petrol")
 Diesel = Category(parent=Car, display_name='Diesel')
-NewObj = Category(parent=Diesel,display_name="newobj2")
-NewObj2 = Category(parent=NewObj,display_name='Neww')
+NewObj = Category(parent=Diesel, display_name="newobj2")
+NewObj2 = Category(parent=NewObj, display_name='Neww')
 
-print(Vehicle.display())
-print(Bike.display())
-print(Car.display())
-print(Petrol.display())
-print(Diesel.display())
+print(Vehicle.display_info())
+print(Bike.display_info())
+print(Car.display_info())
+print(Petrol.display_info())
+print(Diesel.display_info())
+print(NewObj.display_info())
+print(NewObj2.display_info())
 
 # Vehicle is Parent Class It Has Two Child Class --> 1)Bike 2)Car
 # Bike Class Has One Child Class --> Petrol
