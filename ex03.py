@@ -24,12 +24,26 @@ class Location:
 
 
 class Movement:
-    def __init__(self, from_location, to_location, product, quantity):
+    def __init__(self, from_location, to_location, product, productstock=0, quantity=0):
         self.from_location = from_location
         self.to_location = to_location
         self.product = product
+        self.productstock = productstock
         self.quantity = quantity
+        try:
+            if self.productstock <= 0 or self.quantity <= 0:
+                raise ValueError("Out of Stock")
+            print("From:", self.from_location, '\n''To:', self.to_location, '\n'"Quantity total: ",
+                  self.productstock)
 
+            ans = self.productstock - self.quantity
+            print(self.to_location, 'Added: ', self.quantity, '\n''After Available is: ', ans)
+            print('\n')
+
+        except ValueError as ve:
+            print("Error:", str(ve))
+
+    #
     @staticmethod
     def movement_by_product(product):
         for i in list_of_movements:
@@ -59,21 +73,6 @@ class Movement:
         except ValueError as ve:
             print("Error:", str(ve))
 
-    # def product_move(self,Object,Object2):
-    #     try:
-    #         if Object.stockofproduct<= 0 or Object2.quantity <=0:
-    #             raise ValueError('Out Of Stock')
-    #
-    #         print('From-Location: ', Object.from_location, '\n''To-Location: ', Object.to_location, '\n''Product-Name: ',
-    #               Object.product, '\n''Product Quantity: ', Object.quantity)
-    #         ans = Object.stockofproduct - Object2.quantity
-    #         print('After Product Move Available Quantity: ', ans)
-    #         if ans == 0:
-    #             print('Product Out of Stock ! Now')
-    #
-    #     except ValueError as ve:
-    #         print('\n''Error: ', {str(ve)}, '\n')
-
 
 m1 = Movement(from_location='Rajkot', to_location="Upleta", product="Mobile", quantity=100)
 m2 = Movement(from_location="Surat", to_location="Rajkot", product="Laptop", quantity=20)
@@ -82,17 +81,15 @@ m4 = Movement(from_location="Mumbai", to_location="Morbi", product='Tv', quantit
 
 list_of_movements = [m1, m2, m3, m4]
 
-
 Movement.movement_by_product("Tv")
 
 
 class Product:
 
-    def __init__(self, location, stockofproduct, productname):
+    def __init__(self, location, productname):
         self.productname = productname
-        self.stockofproduct = stockofproduct
         self.location = location
-        self.stock_at_locations = {self.location: self.stockofproduct}
+        self.stock_at_locations = {self.location: self.productname}
 
     def __str__(self):
         return f"{self.productname}"
@@ -114,27 +111,21 @@ Upleta = Location(name="Upleta", code=123)
 Surat = Location(name="Surat", code=99)
 Ahmadabad = Location(name='Ahmadabad', code=31)
 
-Mobile = Product(location=Rajkot, stockofproduct=10, productname="iPhone")
-Laptop = Product(location=Upleta, stockofproduct=25, productname="Asus-Tuf")
-Laptop1 = Product(location=Upleta, stockofproduct=5, productname="Asus-Tuf-2")
-Fruits = Product(location=Surat, stockofproduct=3, productname="Apple")
-Bikes = Product(location=Ahmadabad, stockofproduct=10, productname="Honda")
-Car = Product(location=Surat, stockofproduct=20, productname="i-20")
+Mobile = Product(location=Rajkot, productname="iPhone")
+Laptop = Product(location=Upleta, productname="Asus-Tuf")
+Laptop1 = Product(location=Upleta, productname="Asus-Tuf-2")
+Fruits = Product(location=Surat, productname="Apple")
+Bikes = Product(location=Ahmadabad, productname="Honda")
+Car = Product(location=Surat, productname="i-20")
 #
 # Mobile.display()
 # Car.display()
 
-laptops = Movement(from_location=Rajkot, to_location=Upleta, quantity=5, product=Laptop)
-mobiles = Movement(from_location=Surat, to_location=Ahmadabad, quantity=10, product=Mobile)
-fruits = Movement(from_location=Surat, to_location=Upleta, quantity=2, product=Fruits)
-bikes = Movement(from_location=Ahmadabad, to_location=Rajkot, quantity=1, product=Bikes)
-cars = Movement(from_location=Upleta, to_location=Surat, quantity=2, product=Car)
-
-laptops.movement(productname=Laptop, movement=laptops)
-mobiles.movement(productname=Mobile,movement=mobiles)
-fruits.movement(productname=Fruits,movement=fruits)
-bikes.movement(productname=Bikes,movement=bikes)
-cars.movement(productname=Car,movement=cars)
+laptops = Movement(from_location=Rajkot, to_location=Upleta, quantity=5, product=Laptop, productstock=48)
+mobiles = Movement(from_location=Surat, to_location=Ahmadabad, quantity=10, product=Mobile, productstock=12)
+fruits = Movement(from_location=Surat, to_location=Upleta, quantity=2, product=Fruits, productstock=2)
+bikes = Movement(from_location=Ahmadabad, to_location=Rajkot, quantity=1, product=Bikes, productstock=13)
+cars = Movement(from_location=Upleta, to_location=Surat, quantity=2, product=Car, productstock=5)
 
 # mobiles.product_move()
 # fruits.product_move()
