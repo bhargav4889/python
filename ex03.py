@@ -24,26 +24,14 @@ class Location:
 
 
 class Movement:
-    def __init__(self, from_location, to_location, product, productstock, quantity):
+    def __init__(self, from_location, to_location, product, productstock=0, quantity=0):
         self.from_location = from_location
         self.to_location = to_location
         self.product = product
         self.productstock = productstock
         self.quantity = quantity
-        try:
-            if self.productstock <= 0 or self.quantity <= 0:
-                raise ValueError("Out of Stock")
-            print("From:", self.from_location, '\n''To:', self.to_location, '\n'"Quantity total: ",
-                  self.productstock)
+        self.movement()
 
-            ans = self.productstock - self.quantity
-            print(self.to_location, 'Added: ', self.quantity, '\n''After Available is: ', ans)
-            print('\n')
-
-        except ValueError as ve:
-            print("Error:", str(ve))
-
-    #
     @staticmethod
     def movement_by_product(product):
         for i in list_of_movements:
@@ -59,19 +47,19 @@ class Movement:
                   "\n""Quantity is: ", i.quantity)
             print('\n')
 
-#     def movement(self, productname, movement):
-#         try:
-#             if productname.stockofproduct <= 0 or movement.quantity <= 0:
-#                 raise ValueError("Out of Stock")
-#             print("From:", movement.from_location, '\n''To:', movement.to_location, '\n'"Quantity total: ",
-#                   productname.stockofproduct)
+    def movement(self):
+        try:
+            if self.productstock <= 0 or self.quantity <= 0:
+                raise ValueError("Out of Stock")
+            print("From:", self.from_location, '\n''To:', self.to_location, '\n'"Quantity total: ",
+                  self.productstock)
 
-#             ans = productname.stockofproduct - movement.quantity
-#             print(movement.to_location, 'Added: ', movement.quantity, '\n''After Available is: ', ans)
-#             print('\n')
+            ans = self.productstock - self.quantity
+            print(self.to_location, 'Added: ', self.quantity, '\n''After Available is: ', ans)
+            print('\n')
 
-#         except ValueError as ve:
-#             print("Error:", str(ve))
+        except ValueError as ve:
+            print("Error:", str(ve))
 
 
 m1 = Movement(from_location='Rajkot', to_location="Upleta", product="Mobile", quantity=100)
