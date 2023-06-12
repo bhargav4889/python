@@ -5,6 +5,7 @@
 # Apply Multiple possible validation for phone number and email
 # Does not allowed number in name,city,state and country
 #
+import datetime
 
 import re
 from datetime import *
@@ -57,21 +58,20 @@ shipping_customer = Customer(name="E-kart", street="New Plaza Road", state="Karn
 # "order" is the object of Order.
 # "subtotal" is auto calculated based on quantity and price.
 class Order:
-    def __init__(self, number, date, company, billing, shipping, order_lines):
-        self.shipping = shipping
-        self.order_lines = order_lines
-        self.billing = billing
-        self.total_amount = self.total()
-        self.company = company
-        self.date = datetime.strptime(date, "%Y-%m-%d").date()
+    def __init__(self, number, company, shipping, billing, date, order_lines):
         self.number = number
+        self.company = company
+        self.shipping = shipping
+        self.billing = billing
+        self.date = datetime.strptime(date, "%Y-%m-%d").date()
+        self.order_lines = order_lines
         self.datevalid()
 
     def datevalid(self):
         current_date = datetime.now().date()
         if self.date >= current_date:
             pass
-        #     print(self.date)
+            #     print(self.date)
         else:
             print("Past Date Entered")
 
@@ -79,19 +79,11 @@ class Order:
         total_amount = 0
         for i in self.order_lines:
             total_amount += i.subtotal
-        # print(total_amount)
-
-    def __str__(self):
-        return self.company
-
-    def add(self, object):
-        self.order_lines.append(object)
-        for i in self.order_lines:
-            print(i.number)
+            # print(total_amount)
 
 
 class OrderLine:
-    def __init__(self, order, product, quantity, price, ):
+    def __init__(self, order, quantity, price, product):
         self.order = order
         self.product = product
         self.quantity = quantity
@@ -104,7 +96,7 @@ class OrderLine:
 
 
 Apple = OrderLine(order=None, quantity=5, price=65999, product="iphone-12")
-Mi = OrderLine(order=None, quantity=2, price=16999, product='MiNote-10')
+Mi = OrderLine(order=None, quantity=2, price=16999, product="MiNote-10")
 
 Banana = OrderLine(order=None, quantity=25, price=15, product="Banana")
 Orange = OrderLine(order=None, quantity=50, product="Oranges", price=21)
@@ -116,23 +108,40 @@ Tomato = OrderLine(order=None, quantity=50, product="Tomato", price=20)
 Potato = OrderLine(order=None, quantity=100, product="Potato", price=20)
 Onion = OrderLine(order=None, quantity=75, price=18, product="Onion")
 
-Order_Fruits = Order(number=1, company=company_customer, shipping=shipping_customer, billing=billing_customer,
-                     date="2023-06-23", order_lines=[Banana, Orange])
-Order_Mobiles = Order(number=2, company=company_customer, shipping=shipping_customer, billing=billing_customer,
+order_mobiles = Order(number=1, company=company_customer, shipping=shipping_customer, billing=billing_customer,
                       date="2023-12-31", order_lines=[Apple, Mi])
-Order_Vegetables = Order(number=3, company=company_customer, shipping=shipping_customer, billing=billing_customer,
+order_vegetables = Order(number=2, company=company_customer, shipping=shipping_customer, billing=billing_customer,
                          date="2024-01-21", order_lines=[Tomato, Potato, Onion])
-Order_Cars = Order(number=4, company=company_customer, billing=billing_customer, shipping=shipping_customer,
+order_cars = Order(number=3, company=company_customer, billing=billing_customer, shipping=shipping_customer,
                    date="2023-07-30", order_lines=[HondaCity, i_20])
+order_fruits = Order(number=4, company=company_customer, shipping=shipping_customer, billing=billing_customer,
+                     date="2023-06-23", order_lines=[Banana, Orange])
 
-#
+Apple.order = order_mobiles
+Mi.order = order_mobiles
+
+i_20.order = order_cars
+HondaCity.order = order_cars
+
+Orange.order = order_fruits
+Banana.order = order_fruits
+
+Tomato.order = order_vegetables
+Onion.order = order_vegetables
+Potato.order = order_fruits
+
 # Display Order and Customer Information
 # Sort orders based on "date".
 # User can filter the current month orders
 # Search Orders from its number.
 # List/Display all orders of a specific product.
+#
+Order_List = [order_mobiles, order_cars, order_fruits, order_vegetables]
+today = datetime.today()
 
-Order_List = [Order_Mobiles, Order_Cars, Order_Fruits, Order_Vegetables]
+for i in Order_List:
+    if i.date.month == today.month:
+        print("This Month Order No: ", i.number, "\n""Date is: ", i.date, "\n")
 
 
 def sort_by_date(list1):
@@ -145,10 +154,9 @@ def sort_by_date(list1):
 
 
 # sort_by_date(Order_List)
-#
+
 # for i in Order_List:
 #     print("Date:", i.date, '\n'"Order-No: ", i.number)
-
 
 
 def order_no(no):
@@ -158,5 +166,6 @@ def order_no(no):
             break
         else:
             print("No Order Found")
-
-order_no(no=2)
+#
+#
+# order_no(no=2)
