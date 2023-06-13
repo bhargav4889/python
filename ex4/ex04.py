@@ -64,8 +64,10 @@ class Order:
         self.shipping = shipping
         self.billing = billing
         self.date = datetime.strptime(date, "%Y-%m-%d").date()
-        self.order_lines = order_lines
+        self.order_lines = [order_lines]
         self.datevalid()
+        self.sort_by_date()
+        self.order_no(no=2)
 
     def datevalid(self):
         current_date = datetime.now().date()
@@ -80,6 +82,20 @@ class Order:
         for i in self.order_lines:
             total_amount += i.subtotal
             # print(total_amount)
+
+    def sort_by_date(self):
+        length = len(self.order_lines)
+        for i in range(0, length - 1):
+            for j in range(length - i - 1):
+                if self.order_lines[j].date > self.order_lines[j + 1].date:
+                    self.order_lines[j], self.order_lines[j + 1] = self.order_lines[j + 1], self.order_lines[j]
+        return self.order_lines
+
+    def order_no(self, no):
+        if self.number == no:
+            print(self.company, self.date)
+        else:
+            print("No Order Found")
 
 
 class OrderLine:
@@ -144,13 +160,13 @@ for i in Order_List:
         print("This Month Order No: ", i.number, "\n""Date is: ", i.date, "\n")
 
 
-def sort_by_date(list1):
-    length = len(list1)
-    for i in range(0, length - 1):
-        for j in range(length - i - 1):
-            if list1[j].date > list1[j + 1].date:
-                list1[j], list1[j + 1] = list1[j + 1], list1[j]
-    return list1
+# def sort_by_date(list1):
+#     length = len(list1)
+#     for i in range(0, length - 1):
+#         for j in range(length - i - 1):
+#             if list1[j].date > list1[j + 1].date:
+#                 list1[j], list1[j + 1] = list1[j + 1], list1[j]
+#     return list1
 
 
 # sort_by_date(Order_List)
@@ -159,13 +175,13 @@ def sort_by_date(list1):
 #     print("Date:", i.date, '\n'"Order-No: ", i.number)
 
 
-def order_no(no):
-    for i in Order_List:
-        if i.number == no:
-            print(i.company, i.date)
-            break
-        else:
-            print("No Order Found")
+# def order_no(no):
+#     for i in Order_List:
+#         if i.number == no:
+#             print(i.company, i.date)
+#             break
+#         else:
+#             print("No Order Found")
 #
 #
 # order_no(no=2)
